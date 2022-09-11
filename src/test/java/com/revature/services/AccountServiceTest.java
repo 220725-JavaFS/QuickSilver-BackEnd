@@ -35,7 +35,7 @@ class AccountServiceTest {
 	
 	@InjectMocks
 	AccountService accountService;
- //Use this accountServiceConstructor as the AccountService
+ //Use as the AccountService
 	
 	@Mock
     private AccountRepo accountRepo;
@@ -71,17 +71,16 @@ class AccountServiceTest {
 	}
 	
 	@Test
-	void getAccountByUsernameTestIfNotNull() {
+	void getAcdcountByUsernameTestIfNotNull() {
 		//Testing if the value put in fails with the values put in
 	 when(accountRepo.findByUsername(username)).thenReturn(Optional.of((new Account(1, "test", 3556498))));
 		username = "test";
 		passwordString = "test";
 		//mocking a database call
 		log.info(when(accountRepo.findByUsername(username)).thenReturn(Optional.of((new Account(1, "test", 3556498)))).toString());
-		//I don't know why this works AFTER adding the tpString method....
+		//I don't know why this works AFTER adding the toString method....
 		assertNotEquals(null, accountService.getAccountByUsername(username, passwordString));
 	}
-	
 	
 	@Test
 	void getAccountsTest() {

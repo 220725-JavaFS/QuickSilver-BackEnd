@@ -1,19 +1,20 @@
 package com.revature.models;
 
 //This model has only been made to handle the object coming in from JavaScript
-public class LoginDTO {
+public class AccountDTO {
+	
 	private int id;
 	private String username;
 	private String password;
 	
-	public LoginDTO(int id, String username, String password) {
+	public AccountDTO(int id, String username, String password) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.password = password;
 	}
 
-	public LoginDTO() {
+	public AccountDTO() {
 		super();
 	}
 	
@@ -60,7 +61,7 @@ public class LoginDTO {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		LoginDTO other = (LoginDTO) obj;
+		AccountDTO other = (AccountDTO) obj;
 		if (id != other.id)
 			return false;
 		if (password == null) {

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.models.Account;
-import com.revature.models.LoginDTO;
+import com.revature.models.AccountDTO;
 import com.revature.services.AccountService;
 
 
@@ -42,7 +42,7 @@ public class AccountController {
 	
 	
 	@GetMapping("/login") 
-	public ResponseEntity<Account> loginUser(@RequestBody LoginDTO account, HttpServletRequest request){
+	public ResponseEntity<Account> loginUser(@RequestBody AccountDTO account, HttpServletRequest request){
 		String username = account.getUsername(); //Making sure to have HTTPServletRequest here to track session
 		String password = account.getPassword();
 		//Using the DTO to store the values of username and password and then passing them down
