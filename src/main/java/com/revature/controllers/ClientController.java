@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,7 @@ import com.revature.models.ClientDTO;
 import com.revature.services.ClientService;
 
 @RestController
-@RequestMapping("client")
+@RequestMapping("/client")
 public class ClientController {
 	
 	private static Logger log = LoggerFactory.getLogger(AccountController.class);
@@ -31,7 +32,8 @@ public class ClientController {
 	}
 	
 	@PostMapping("/register")
-	public ResponseEntity<Client> addClient(@RequestBody ClientDTO clientDTO, HttpServletRequest request){
+	@CrossOrigin
+	public ResponseEntity<Object> addClient(@RequestBody ClientDTO clientDTO, HttpServletRequest request){
 		Client client = new Client();
 		AccountDTO accountDTO = new AccountDTO();
 		//creating DTO and appropriate object for the client
@@ -44,16 +46,24 @@ public class ClientController {
 		accountDTO.setUsername(clientDTO.getUsername());
 		accountDTO.setPassword(clientDTO.getPassword());
 		//setting fields in the accountDTO to be used later.
+		log.info("Object entering the BackEnd is: " + client);
 		
 		try {
 		Client newClient = clientService.registerClient(client, accountDTO);
 		
 			if (newClient!=null) {
+				
+				int clientId = newClient.getClientId();
+				clientDTO.setId(clientId);
+				clientDTO.setPassword(null);
+				
 				HttpSession session = request.getSession();
 				session.setAttribute("role", "user");
 				log.info("User has been successfully registered! Session created!");
 				
-				return ResponseEntity.status(HttpStatus.CREATED).build();
+				
+				
+				return ResponseEntity.status(HttpStatus.CREATED).body(clientDTO);
 			} else {
 				HttpSession session = request.getSession();
 				session.invalidate();

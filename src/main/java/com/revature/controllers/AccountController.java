@@ -9,8 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +30,7 @@ public class AccountController {
 	
 	private AccountService accountService;
 	
+	
 	public AccountController(AccountService accountService) { //More Constructor Injection
 		super();
 		this.accountService = accountService;
@@ -41,19 +44,29 @@ public class AccountController {
 	
 	
 	
-	@GetMapping("/login") 
-	public ResponseEntity<Account> loginUser(@RequestBody AccountDTO account, HttpServletRequest request){
+	@PostMapping("/login") //Just changed this to object.
+	@CrossOrigin
+	public ResponseEntity<Object> loginUser(@RequestBody AccountDTO account, HttpServletRequest request){
 		String username = account.getUsername(); //Making sure to have HTTPServletRequest here to track session
 		String password = account.getPassword();
 		//Using the DTO to store the values of username and password and then passing them down
 		
+		log.info("Account info being sent to the Back End: " + account);
+		
 		Account trueAccount = accountService.getAccountByUsername(username, password);
+		
 		if (trueAccount!=null) {
 			HttpSession session = request.getSession();
 			session.setAttribute("role", "user");
 			log.info("Success! User session has been created!");
 			
-			return ResponseEntity.status(HttpStatus.OK).build();
+			int id = trueAccount.getAccountId();
+			account.setId(id);
+			account.setPassword(null);
+		
+			log.info("Account info being sent back to the Front End: " + account);
+			
+			return ResponseEntity.status(HttpStatus.OK).body(account);
 			//Sending back an OK response
 		}else {
 			HttpSession session = request.getSession();
