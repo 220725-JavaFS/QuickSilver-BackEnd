@@ -58,7 +58,8 @@ public class ClientController {
 				HttpSession session = request.getSession();
 				session.invalidate();
 				log.info("Something went wrong, session was not created since client was not created.");
-				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+				//Most likely don't need this piece. 
 				}
 		} catch(Exception e) {
 			log.error("500 error, duplicate unqiue variable in database");
