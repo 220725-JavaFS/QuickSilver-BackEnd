@@ -28,14 +28,14 @@ class AccountControllerTest {
 	void tearDown() throws Exception {
 	}
 
-	@Test
-	void testGetAccounts() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testLoginUser() {
-		fail("Not yet implemented");
-	}
+//	@Test
+//	void testGetAccounts() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	void testLoginUser() {
+//		fail("Not yet implemented");
+//	}
 
 }

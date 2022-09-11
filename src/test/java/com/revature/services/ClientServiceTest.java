@@ -50,10 +50,10 @@ class ClientServiceTest {
 	void tearDown() throws Exception {
 	}
 
-	@Test
-	void testRegisterClient() {
-		when(clientRepo.save(client)).then(null);
-		//Need to complete this
-	}
+//	@Test
+//	void testRegisterClient() {
+//		when(clientRepo.save(client)).then(null);
+//		//Need to complete this
+//	}
 
 }
