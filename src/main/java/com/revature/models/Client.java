@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -26,9 +27,15 @@ public class Client { //Might take OUT @Table if this doesn't work
 	private int caloricGoal;
 	@OneToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	private Account account;
+	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+	private Workouts workouts;
 	//Setting relationship as OneToOne
 	
-	public Client(int clientId, String fName, String lName, String email, int caloricGoal, Account account) {
+	public Client() {
+		super();
+	}
+	public Client(int clientId, String fName, String lName, String email, int caloricGoal, Account account,
+			Workouts workouts) {
 		super();
 		this.clientId = clientId;
 		this.fName = fName;
@@ -36,17 +43,8 @@ public class Client { //Might take OUT @Table if this doesn't work
 		this.email = email;
 		this.caloricGoal = caloricGoal;
 		this.account = account;
+		this.workouts = workouts;
 	}
-	
-	
-	public Client(String fName, String lName, int caloricGoal, Account account) {
-		super();
-		this.fName = fName;
-		this.lName = lName;
-		this.caloricGoal = caloricGoal;
-		this.account = account;
-	}
-
 	public Client(String fName, String lName, String email, int caloricGoal, Account account) {
 		super();
 		this.fName = fName;
@@ -55,59 +53,48 @@ public class Client { //Might take OUT @Table if this doesn't work
 		this.caloricGoal = caloricGoal;
 		this.account = account;
 	}
-
-	public Client() {
-		super();
-	}
-
 	public int getClientId() {
 		return clientId;
 	}
-
 	public void setClientId(int clientId) {
 		this.clientId = clientId;
 	}
-
 	public String getfName() {
 		return fName;
 	}
-
 	public void setfName(String fName) {
 		this.fName = fName;
 	}
-
 	public String getlName() {
 		return lName;
 	}
-
 	public void setlName(String lName) {
 		this.lName = lName;
 	}
-
 	public String getEmail() {
 		return email;
 	}
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 	public int getCaloricGoal() {
 		return caloricGoal;
 	}
-
 	public void setCaloricGoal(int caloricGoal) {
 		this.caloricGoal = caloricGoal;
 	}
-
 	public Account getAccount() {
 		return account;
 	}
-
 	public void setAccount(Account account) {
 		this.account = account;
 	}
-
+	public Workouts getWorkouts() {
+		return workouts;
+	}
+	public void setWorkouts(Workouts workouts) {
+		this.workouts = workouts;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -118,9 +105,9 @@ public class Client { //Might take OUT @Table if this doesn't work
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((fName == null) ? 0 : fName.hashCode());
 		result = prime * result + ((lName == null) ? 0 : lName.hashCode());
+		result = prime * result + ((workouts == null) ? 0 : workouts.hashCode());
 		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -154,14 +141,20 @@ public class Client { //Might take OUT @Table if this doesn't work
 				return false;
 		} else if (!lName.equals(other.lName))
 			return false;
+		if (workouts == null) {
+			if (other.workouts != null)
+				return false;
+		} else if (!workouts.equals(other.workouts))
+			return false;
 		return true;
 	}
-
 	@Override
 	public String toString() {
 		return "Client [clientId=" + clientId + ", fName=" + fName + ", lName=" + lName + ", email=" + email
-				+ ", caloricGoal=" + caloricGoal + ", account=" + account + "]";
+				+ ", caloricGoal=" + caloricGoal + ", account=" + account + ", workouts=" + workouts + "]";
 	}
+	
+	
 	
 	
 	
