@@ -46,6 +46,7 @@ public class AccountController {
 	} //This should return ALL accounts if they were made. 
 	
 	@GetMapping("/logout")
+	@CrossOrigin
 	public ResponseEntity<Object>LogoutUser(HttpServletRequest request){
 		HttpSession session = request.getSession(false);
 		if(session!=null) {
@@ -57,6 +58,7 @@ public class AccountController {
 	}
 	
 	@GetMapping("/check")
+	@CrossOrigin
 	public ResponseEntity<Object>CheckSession(HttpServletRequest request){
 		HttpSession session = request.getSession(false);
 		if(session!=null) {
