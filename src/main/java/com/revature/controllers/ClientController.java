@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,6 +60,7 @@ public class ClientController {
 				
 				HttpSession session = request.getSession();
 				session.setAttribute("role", "user");
+				session.setAttribute("userAccount", client.getAccount());
 				log.info("User has been successfully registered! Session created!");
 				
 				
@@ -78,5 +80,23 @@ public class ClientController {
 		}
 	}
 	
+	@PutMapping
+	@CrossOrigin
+	public ResponseEntity<Object> updateClient(@RequestBody ClientDTO clientDTO, HttpServletRequest request){
+		if(!clientService.clientExists(clientDTO)) {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		}
+		HttpSession session = request.getSession(false);
+		if(session == null) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+		}
+		Client client = clientService.getClientbyID(clientDTO.getId());
+		if(client.getAccount() != session.getAttribute("userAccount")) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+		}
+		
+		clientService.updateClient(clientDTO);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+	}
 
 }

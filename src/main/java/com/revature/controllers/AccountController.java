@@ -85,6 +85,7 @@ public class AccountController {
 			HttpSession session = request.getSession();
 			System.out.println(session);
 			session.setAttribute("role", "user");
+			session.setAttribute("userAccount", trueAccount);
 			log.info("Success! User session has been created! Session Id is: "+session.getId()+". It was created on: "+session.getCreationTime());
 			
 			int id = trueAccount.getAccountId();

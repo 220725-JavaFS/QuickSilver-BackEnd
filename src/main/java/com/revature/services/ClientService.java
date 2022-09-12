@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.revature.models.Account;
 import com.revature.models.AccountDTO;
 import com.revature.models.Client;
+import com.revature.models.ClientDTO;
 import com.revature.repositories.ClientRepo;
 
 @Service
@@ -38,6 +39,36 @@ public class ClientService {
 		Client dbClient = clientRepo.save(client);
 		
 		return dbClient;
+	}
+	
+	public Boolean clientExists(ClientDTO client) {
+		try {
+			clientRepo.getReferenceById(client.getId());
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	public Client getClientbyID(int clientID) {
+		try {
+			return clientRepo.getReferenceById(clientID);
+		}catch(Exception e) {
+			return null;
+		}
+	}
+
+	public void updateClient(ClientDTO clientDTO) {
+		try {
+			Client dbClient = clientRepo.getReferenceById(clientDTO.getId());
+			dbClient.setCaloricGoal(clientDTO.getCaloricGoal());
+			dbClient.setEmail(clientDTO.getEmail());
+			dbClient.setfName(clientDTO.getfName());
+			dbClient.setlName(clientDTO.getlName());
+			return;
+		}catch(Exception e){
+			return;
+		}
 	}
 	
 	
