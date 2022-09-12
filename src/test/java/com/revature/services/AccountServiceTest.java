@@ -33,15 +33,14 @@ class AccountServiceTest {
 	
 	@InjectMocks
 	AccountService accountService;
- //Use as the AccountService
+    //Use as the AccountService
 	
 	@Mock
     private AccountRepo accountRepo;
 	
 
 	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-		
+	static void setUpBeforeClass() throws Exception {	
 	}
 
 	@AfterAll

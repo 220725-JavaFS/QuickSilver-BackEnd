@@ -37,10 +37,36 @@ public class AccountController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<Account>> getAccounts(){
+	public ResponseEntity<List<Account>> getAccounts(HttpServletRequest request){
 		List<Account> accounts = accountService.getAllAccounts();
+		HttpSession session = request.getSession(false);
+		String sessions = session.getId();
+		log.info(sessions);
 		return ResponseEntity.status(200).body(accounts);
 	} //This should return ALL accounts if they were made. 
+	
+	@GetMapping("/logout")
+	public ResponseEntity<Object>LogoutUser(HttpServletRequest request){
+		HttpSession session = request.getSession(false);
+		if(session!=null) {
+			session.invalidate();
+			return ResponseEntity.status(HttpStatus.OK).build();
+		}else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();	
+		}
+	}
+	
+	@GetMapping("/check")
+	public ResponseEntity<Object>CheckSession(HttpServletRequest request){
+		HttpSession session = request.getSession(false);
+		if(session!=null) {
+			String loggedIn = "Is logged in";
+			return ResponseEntity.status(HttpStatus.OK).body(loggedIn);
+		}else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+	}
+	
 	
 	
 	
@@ -57,8 +83,9 @@ public class AccountController {
 		
 		if (trueAccount!=null) {
 			HttpSession session = request.getSession();
+			System.out.println(session);
 			session.setAttribute("role", "user");
-			log.info("Success! User session has been created!");
+			log.info("Success! User session has been created! Session Id is: "+session.getId()+". It was created on: "+session.getCreationTime());
 			
 			int id = trueAccount.getAccountId();
 			account.setId(id);
@@ -78,5 +105,4 @@ public class AccountController {
 		//When using any other Method, it is BEST use the request object and do request.getSession(false) to check if there is already a session. 
 	}
 	
-
 }
