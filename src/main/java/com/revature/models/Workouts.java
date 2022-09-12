@@ -13,8 +13,8 @@ public class Workouts {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO) // auto generate workoutId number
 	private int workoutId;
+	private String date;
 	private String name;
-	private int cph;
 	private int durMin;
 	private int totCal;
 	
@@ -22,19 +22,19 @@ public class Workouts {
 		super();
 	}
 
-	public Workouts(int workoutId, String name, int cph, int durMin, int totCal) {
+	public Workouts(int workoutId, String date, String name, int durMin, int totCal) {
 		super();
 		this.workoutId = workoutId;
+		this.date = date;
 		this.name = name;
-		this.cph = cph;
 		this.durMin = durMin;
 		this.totCal = totCal;
 	}
 
-	public Workouts(String name, int cph, int durMin, int totCal) {
+	public Workouts(String date, String name, int durMin, int totCal) {
 		super();
+		this.date = date;
 		this.name = name;
-		this.cph = cph;
 		this.durMin = durMin;
 		this.totCal = totCal;
 	}
@@ -47,20 +47,20 @@ public class Workouts {
 		this.workoutId = workoutId;
 	}
 
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public int getCph() {
-		return cph;
-	}
-
-	public void setCph(int cph) {
-		this.cph = cph;
 	}
 
 	public int getDurMin() {
@@ -83,7 +83,7 @@ public class Workouts {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + cph;
+		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + durMin;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + totCal;
@@ -100,7 +100,10 @@ public class Workouts {
 		if (getClass() != obj.getClass())
 			return false;
 		Workouts other = (Workouts) obj;
-		if (cph != other.cph)
+		if (date == null) {
+			if (other.date != null)
+				return false;
+		} else if (!date.equals(other.date))
 			return false;
 		if (durMin != other.durMin)
 			return false;
@@ -118,9 +121,11 @@ public class Workouts {
 
 	@Override
 	public String toString() {
-		return "Workouts [workoutId=" + workoutId + ", name=" + name + ", cph=" + cph + ", durMin=" + durMin
+		return "Workouts [workoutId=" + workoutId + ", date=" + date + ", name=" + name + ", durMin=" + durMin
 				+ ", totCal=" + totCal + "]";
 	}
+
+	
 
 	
 
