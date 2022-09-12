@@ -1,5 +1,7 @@
 package com.revature.models;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,14 +30,14 @@ public class Client { //Might take OUT @Table if this doesn't work
 	@OneToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	private Account account;
 	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-	private Workouts workouts;
+	private List<Workouts> workouts;
 	//Setting relationship as OneToOne
 	
 	public Client() {
 		super();
 	}
 	public Client(int clientId, String fName, String lName, String email, int caloricGoal, Account account,
-			Workouts workouts) {
+			List<Workouts> workouts) {
 		super();
 		this.clientId = clientId;
 		this.fName = fName;
@@ -89,10 +91,10 @@ public class Client { //Might take OUT @Table if this doesn't work
 	public void setAccount(Account account) {
 		this.account = account;
 	}
-	public Workouts getWorkouts() {
+	public List<Workouts> getWorkouts() {
 		return workouts;
 	}
-	public void setWorkouts(Workouts workouts) {
+	public void setWorkouts(List<Workouts> workouts) {
 		this.workouts = workouts;
 	}
 	@Override
@@ -153,6 +155,8 @@ public class Client { //Might take OUT @Table if this doesn't work
 		return "Client [clientId=" + clientId + ", fName=" + fName + ", lName=" + lName + ", email=" + email
 				+ ", caloricGoal=" + caloricGoal + ", account=" + account + ", workouts=" + workouts + "]";
 	}
+	
+	
 	
 	
 	
