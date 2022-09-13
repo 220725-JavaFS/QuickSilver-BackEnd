@@ -142,6 +142,20 @@ public class ClientController {
 		}
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
+	
+	@PutMapping("/password/{clientId}")
+	@CrossOrigin
+	public ResponseEntity<ClientDTO> updateClientPassword(HttpServletRequest request, @PathVariable("clientId") int clientId, @RequestBody ClientDTO newClientData){
+		if(clientService.clientExists(clientId)) {
+			ClientDTO toReturn = clientService.updateClientPassword(newClientData);
+			if(toReturn != null) {
+				return ResponseEntity.status(HttpStatus.OK).body(toReturn);
+			}else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+	}
 
 
 }

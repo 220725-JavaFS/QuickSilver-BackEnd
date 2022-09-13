@@ -119,6 +119,17 @@ public class ClientService {
 		
 
 	}
+
+	public ClientDTO updateClientPassword(ClientDTO newClientData) {
+		try {
+			Client dbClient = clientRepo.getReferenceById(newClientData.getId());
+			dbClient.getAccount().setUserPassword(newClientData.getPassword().hashCode());
+			clientRepo.save(dbClient);
+			return newClientData;
+		}catch(Exception e){
+			return null;
+		}
+	}
 	
 	
 
