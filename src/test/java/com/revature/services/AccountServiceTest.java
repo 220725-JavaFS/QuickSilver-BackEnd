@@ -27,23 +27,20 @@ import com.revature.repositories.AccountRepo;
 
 class AccountServiceTest {
 	
-	private static Logger log = LoggerFactory.getLogger(AccountController.class);
-	
 	private static String username;
 	private static String passwordString;
 	private static int hashcodedPassword;
 	
 	@InjectMocks
 	AccountService accountService;
- //Use as the AccountService
+    //Use as the AccountService
 	
 	@Mock
     private AccountRepo accountRepo;
 	
 
 	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-		
+	static void setUpBeforeClass() throws Exception {	
 	}
 
 	@AfterAll
@@ -62,7 +59,7 @@ class AccountServiceTest {
 	@Test
 	void getAccountByUsernameTestIfNull() {
 		//Testing if the value put in fails with the values put in
-	 when(accountRepo.findByUsername(username)).thenReturn(Optional.of((new Account(1, "test", 3446498))));
+	 when(accountRepo.findByUsername(username)).thenReturn(Optional.of((new Account(1, "test", 384539539))));
 	 //(Stream.of(new Optional<Account>(1,"test", 3556498)));
 		username = "test";
 		passwordString = "test";
@@ -71,14 +68,11 @@ class AccountServiceTest {
 	}
 	
 	@Test
-	void getAcdcountByUsernameTestIfNotNull() {
-		//Testing if the value put in fails with the values put in
-	 when(accountRepo.findByUsername(username)).thenReturn(Optional.of((new Account(1, "test", 3556498))));
+	void getAccountByUsernameTestIfNotNull() {
 		username = "test";
 		passwordString = "test";
 		//mocking a database call
-		log.info(when(accountRepo.findByUsername(username)).thenReturn(Optional.of((new Account(1, "test", 3556498)))).toString());
-		//I don't know why this works AFTER adding the toString method....
+	   when(accountRepo.findByUsername(username)).thenReturn(Optional.of((new Account(1, "test", 3556498))));
 		assertNotEquals(null, accountService.getAccountByUsername(username, passwordString));
 	}
 	
