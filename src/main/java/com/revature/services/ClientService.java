@@ -58,16 +58,50 @@ public class ClientService {
 		}
 	}
 
-	public void updateClient(ClientDTO clientDTO) {
+	public ClientDTO updateClient(ClientDTO clientDTO) {
 		try {
 			Client dbClient = clientRepo.getReferenceById(clientDTO.getId());
 			dbClient.setCaloricGoal(clientDTO.getCaloricGoal());
 			dbClient.setEmail(clientDTO.getEmail());
 			dbClient.setfName(clientDTO.getfName());
 			dbClient.setlName(clientDTO.getlName());
-			return;
+			return clientDTO;
 		}catch(Exception e){
-			return;
+			return null;
+		}
+	}
+
+	public ClientDTO getClientByAccount(Account account) {
+		try {
+			ClientDTO clientDTO = new ClientDTO();
+			List<Client> cliList = clientRepo.findAll();
+			Client dbClient = null;
+			for(Client client: cliList) {
+				if(client.getAccount().getAccountId() == account.getAccountId()) {
+					dbClient = client;
+					break;
+				}
+			}
+			if(dbClient == null) {
+				return null;
+			}
+			clientDTO.setId(dbClient.getClientId());
+			clientDTO.setfName(dbClient.getfName());
+			clientDTO.setlName(dbClient.getlName());
+			clientDTO.setEmail(dbClient.getEmail());
+			clientDTO.setCaloricGoal(dbClient.getCaloricGoal());
+			return clientDTO;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public boolean clientExists(int clientId) {
+		try {
+			clientRepo.getReferenceById(clientId);
+			return true;
+		}catch(Exception e){
+			return false;
 		}
 	}
 	
