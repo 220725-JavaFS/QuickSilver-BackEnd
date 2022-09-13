@@ -8,4 +8,5 @@ import com.revature.models.Workouts;
 @Repository
 public interface WorkoutsRepo extends JpaRepository<Workouts, Integer>{
 
+	
 }

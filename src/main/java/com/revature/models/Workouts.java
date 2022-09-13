@@ -22,6 +22,7 @@ public class Workouts {
 		super();
 	}
 
+	
 	public Workouts(int workoutId, String date, String name, int durMin, int totCal) {
 		super();
 		this.workoutId = workoutId;
