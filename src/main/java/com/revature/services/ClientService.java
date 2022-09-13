@@ -40,6 +40,18 @@ public class ClientService {
 		return dbClient;
 	}
 	
+	public Client getClientByClientId(int id) {
+		
+		Optional<Client> opt = clientRepo.findById(id);
+
+		if(opt.isPresent()) {
+			return opt.get();
+		}else {
+			return null;
+		}
+		
+	}
+	
 	
 
 }
