@@ -37,15 +37,6 @@ public class Client { //Might take OUT @Table if this doesn't work
 		this.caloricGoal = caloricGoal;
 		this.account = account;
 	}
-	
-	
-	public Client(String fName, String lName, int caloricGoal, Account account) {
-		super();
-		this.fName = fName;
-		this.lName = lName;
-		this.caloricGoal = caloricGoal;
-		this.account = account;
-	}
 
 	public Client(String fName, String lName, String email, int caloricGoal, Account account) {
 		super();

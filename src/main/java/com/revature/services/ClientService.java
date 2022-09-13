@@ -34,16 +34,22 @@ public class ClientService {
 		account.setUserPassword(password);
 		//Now setting the account object INSIDE the client
 		client.setAccount(account);
-		
-//	    String comparedUsername = getUsernameByEmail(client.getEmail());
-//		
-//		if(accountDTO.getUsername().equals(comparedUsername)) {
-//			return null;
-//		}
 			
 		Client dbClient = clientRepo.save(client);
 		
 		return dbClient;
+	}
+	
+	public Client getClientByClientId(int id) {
+		
+		Optional<Client> opt = clientRepo.findById(id);
+
+		if(opt.isPresent()) {
+			return opt.get();
+		}else {
+			return null;
+		}
+		
 	}
 	
 	
