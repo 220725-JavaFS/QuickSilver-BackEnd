@@ -41,6 +41,7 @@ public class ClientService {
 		return dbClient;
 	}
 	
+
 	public Boolean clientExists(ClientDTO client) {
 		try {
 			clientRepo.getReferenceById(client.getId());
@@ -103,6 +104,19 @@ public class ClientService {
 		}catch(Exception e){
 			return false;
 		}
+	}
+
+	public Client getClientByClientId(int id) {
+		
+		Optional<Client> opt = clientRepo.findById(id);
+
+		if(opt.isPresent()) {
+			return opt.get();
+		}else {
+			return null;
+		}
+		
+
 	}
 	
 	

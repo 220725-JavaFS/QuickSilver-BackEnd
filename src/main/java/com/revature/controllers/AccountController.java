@@ -24,11 +24,16 @@ import com.revature.services.AccountService;
 
 @RestController //Making sure Spring can find this controller
 @RequestMapping("/account") //Temporary mapping to check if this all works
+@CrossOrigin
 public class AccountController {
 	
 	private static Logger log = LoggerFactory.getLogger(AccountController.class);
 	
+	private static String sessionId;
+	
 	private AccountService accountService;
+	
+	private static HttpSession session;
 	
 	
 	public AccountController(AccountService accountService) { //More Constructor Injection
@@ -41,39 +46,58 @@ public class AccountController {
 		List<Account> accounts = accountService.getAllAccounts();
 		HttpSession session = request.getSession(false);
 		String sessions = session.getId();
+		
 		log.info(sessions);
 		return ResponseEntity.status(200).body(accounts);
 	} //This should return ALL accounts if they were made. 
 	
-	@GetMapping("/logout")
+	@PostMapping("/logout")
 	@CrossOrigin
-	public ResponseEntity<Object>LogoutUser(HttpServletRequest request){
-		HttpSession session = request.getSession(false);
+	public ResponseEntity<Object>LogoutUser(@RequestBody AccountDTO account, HttpServletRequest request){
+		session = request.getSession(false);
+		log.info("logging out user!");
 		if(session!=null) {
+			//HttpSession session = request.getSession();
 			session.invalidate();
-			return ResponseEntity.status(HttpStatus.OK).build();
+			log.info("Invalidating session");
+			return ResponseEntity.status(HttpStatus.OK).body(account);
 		}else {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();	
+			return ResponseEntity.status(HttpStatus.ACCEPTED).build();	
 		}
 	}
 	
-	@GetMapping("/check")
+	@PostMapping("/check")
 	@CrossOrigin
-	public ResponseEntity<Object>CheckSession(HttpServletRequest request){
-		HttpSession session = request.getSession(false);
+	public ResponseEntity<Object>CheckSession(@RequestBody AccountDTO account, HttpServletRequest request){
+		session = request.getSession(false);
+		log.info("Session is being checked!");
+		
 		if(session!=null) {
-			String loggedIn = "Is logged in";
-			return ResponseEntity.status(HttpStatus.OK).body(loggedIn);
+			log.info("Success! User session has been checked! Session Id is: "+session.getId()+". It was created on: "+session.getCreationTime());
+			if(sessionId.equals(session.getId())) {
+				String gettingUser = (String) session.getAttribute("username");
+				
+				AccountDTO accountResp = new AccountDTO();
+				accountResp.setId(1);
+				accountResp.setUsername(gettingUser);
+				accountResp.setPassword("password");
+				
+				log.info("Session has been verified for the client");
+				return ResponseEntity.status(HttpStatus.OK).body(accountResp);
+			}else {
+				return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+			}
+			
 		}else {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			log.info("No Session exists");
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
 	}
-	
 	
 	
 	
 	@PostMapping("/login") //Just changed this to object.
-	@CrossOrigin
+
 	public ResponseEntity<Object> loginUser(@RequestBody AccountDTO account, HttpServletRequest request){
 		String username = account.getUsername(); //Making sure to have HTTPServletRequest here to track session
 		String password = account.getPassword();
@@ -84,11 +108,14 @@ public class AccountController {
 		Account trueAccount = accountService.getAccountByUsername(username, password);
 		
 		if (trueAccount!=null) {
-			HttpSession session = request.getSession();
-			System.out.println(session);
-			session.setAttribute("role", "user");
-			session.setAttribute("userAccount", trueAccount);
-			log.info("Success! User session has been created! Session Id is: "+session.getId()+". It was created on: "+session.getCreationTime());
+		    session = request.getSession();
+//			System.out.println(session);
+//			session.setAttribute("role", "user");
+//			session.setAttribute("userAccount", trueAccount);
+//			String storedUsername = trueAccount.getUsername();
+//			session.setAttribute("username", storedUsername);
+//			sessionId = session.getId();
+//			log.info("Success! User session has been created! Session Id is: "+session.getId()+". It was created on: "+session.getCreationTime());
 			
 			int id = trueAccount.getAccountId();
 			account.setId(id);
@@ -98,8 +125,9 @@ public class AccountController {
 			
 			return ResponseEntity.status(HttpStatus.OK).body(account);
 			//Sending back an OK response
+			//.header("Access-Control-Allow-Origin", "http://localhost").header("Access-Control-Allow-Credentials", "true").
 		}else {
-			HttpSession session = request.getSession();
+			session = request.getSession();
 			session.invalidate();
 			log.info("User information was incorrect, session destroyed just in case.");
 			return ResponseEntity.status(204).build();

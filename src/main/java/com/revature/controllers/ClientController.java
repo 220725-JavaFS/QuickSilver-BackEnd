@@ -81,8 +81,18 @@ public class ClientController {
 			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
 			
 		}
+		
+		
 	}
 	
+	@GetMapping("/{id}")
+	@CrossOrigin
+	public ResponseEntity<Object> getClientById(@PathVariable("id") int accountId){
+		
+		return ResponseEntity.status(HttpStatus.OK).body(clientService.getClientByClientId(accountId));
+	}
+	
+
 	/*
 	@PutMapping
 	@CrossOrigin
@@ -132,5 +142,6 @@ public class ClientController {
 		}
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
+
 
 }
