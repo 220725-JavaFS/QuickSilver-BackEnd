@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.models.Account;
 import com.revature.models.AccountDTO;
 import com.revature.models.Client;
 import com.revature.models.ClientDTO;
@@ -61,6 +63,7 @@ public class ClientController {
 				
 				HttpSession session = request.getSession();
 				session.setAttribute("role", "user");
+				session.setAttribute("userAccount", client.getAccount());
 				log.info("User has been successfully registered! Session created!");
 				
 				
@@ -89,7 +92,56 @@ public class ClientController {
 		return ResponseEntity.status(HttpStatus.OK).body(clientService.getClientByClientId(accountId));
 	}
 	
+
+	/*
+	@PutMapping
+	@CrossOrigin
+	public ResponseEntity<Object> updateClient(@RequestBody ClientDTO clientDTO, HttpServletRequest request){
+		if(!clientService.clientExists(clientDTO)) {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		}
+		HttpSession session = request.getSession(false);
+		if(session == null) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+		}
+		Client client = clientService.getClientbyID(clientDTO.getId());
+		if(client.getAccount() != session.getAttribute("userAccount")) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+		}
+		
+		clientService.updateClient(clientDTO);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+	}
 	
+	@GetMapping("/loggedIn")
+	@CrossOrigin
+	public ResponseEntity<ClientDTO> getLoggedInClient(HttpServletRequest request){
+		HttpSession session = request.getSession(false);
+		if(session!=null) {
+			ClientDTO returnObj = clientService.getClientByAccount((Account)session.getAttribute("userAccount"));
+			if(returnObj == null) {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+			}
+			return ResponseEntity.status(HttpStatus.OK).body(returnObj);
+		}else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+	}
+	*/
 	
+	@PutMapping("/{clientId}")
+	@CrossOrigin
+	public ResponseEntity<ClientDTO> updateClient(HttpServletRequest request, @PathVariable("clientId") int clientId, @RequestBody ClientDTO newClientData){
+		if(clientService.clientExists(clientId)) {
+			ClientDTO toReturn = clientService.updateClient(newClientData);
+			if(toReturn != null) {
+				return ResponseEntity.status(HttpStatus.OK).body(toReturn);
+			}else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+	}
+
 
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.revature.models.Account;
 import com.revature.models.AccountDTO;
 import com.revature.models.Client;
+import com.revature.models.ClientDTO;
 import com.revature.repositories.ClientRepo;
 
 @Service
@@ -40,6 +41,72 @@ public class ClientService {
 		return dbClient;
 	}
 	
+
+	public Boolean clientExists(ClientDTO client) {
+		try {
+			clientRepo.getReferenceById(client.getId());
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	public Client getClientbyID(int clientID) {
+		try {
+			return clientRepo.getReferenceById(clientID);
+		}catch(Exception e) {
+			return null;
+		}
+	}
+
+	public ClientDTO updateClient(ClientDTO clientDTO) {
+		try {
+			Client dbClient = clientRepo.getReferenceById(clientDTO.getId());
+			dbClient.setCaloricGoal(clientDTO.getCaloricGoal());
+			dbClient.setEmail(clientDTO.getEmail());
+			dbClient.setfName(clientDTO.getfName());
+			dbClient.setlName(clientDTO.getlName());
+			clientRepo.save(dbClient);
+			return clientDTO;
+		}catch(Exception e){
+			return null;
+		}
+	}
+
+	public ClientDTO getClientByAccount(Account account) {
+		try {
+			ClientDTO clientDTO = new ClientDTO();
+			List<Client> cliList = clientRepo.findAll();
+			Client dbClient = null;
+			for(Client client: cliList) {
+				if(client.getAccount().getAccountId() == account.getAccountId()) {
+					dbClient = client;
+					break;
+				}
+			}
+			if(dbClient == null) {
+				return null;
+			}
+			clientDTO.setId(dbClient.getClientId());
+			clientDTO.setfName(dbClient.getfName());
+			clientDTO.setlName(dbClient.getlName());
+			clientDTO.setEmail(dbClient.getEmail());
+			clientDTO.setCaloricGoal(dbClient.getCaloricGoal());
+			return clientDTO;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public boolean clientExists(int clientId) {
+		try {
+			clientRepo.getReferenceById(clientId);
+			return true;
+		}catch(Exception e){
+			return false;
+		}
+	}
+
 	public Client getClientByClientId(int id) {
 		
 		Optional<Client> opt = clientRepo.findById(id);
@@ -50,6 +117,7 @@ public class ClientService {
 			return null;
 		}
 		
+
 	}
 	
 	

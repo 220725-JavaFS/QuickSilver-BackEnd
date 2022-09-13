@@ -109,12 +109,13 @@ public class AccountController {
 		
 		if (trueAccount!=null) {
 		    session = request.getSession();
-			System.out.println(session);
-			session.setAttribute("role", "user");
-			String storedUsername = trueAccount.getUsername();
-			session.setAttribute("username", storedUsername);
-			sessionId = session.getId();
-			log.info("Success! User session has been created! Session Id is: "+session.getId()+". It was created on: "+session.getCreationTime());
+//			System.out.println(session);
+//			session.setAttribute("role", "user");
+//			session.setAttribute("userAccount", trueAccount);
+//			String storedUsername = trueAccount.getUsername();
+//			session.setAttribute("username", storedUsername);
+//			sessionId = session.getId();
+//			log.info("Success! User session has been created! Session Id is: "+session.getId()+". It was created on: "+session.getCreationTime());
 			
 			int id = trueAccount.getAccountId();
 			account.setId(id);
