@@ -10,7 +10,20 @@ public class ClientDTO {
 	private String email;
 	private String username;
 	private String password;
+	private int caloricGoal;
 	
+	public int getCaloricGoal() {
+		return caloricGoal;
+	}
+
+
+
+	public void setCaloricGoal(int caloricGoal) {
+		this.caloricGoal = caloricGoal;
+	}
+
+
+
 	public ClientDTO(int id, String fName, String lName, String email, String username, String password) {
 		super();
 		this.id = id;
