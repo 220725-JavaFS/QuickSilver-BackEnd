@@ -66,6 +66,7 @@ public class ClientService {
 			dbClient.setEmail(clientDTO.getEmail());
 			dbClient.setfName(clientDTO.getfName());
 			dbClient.setlName(clientDTO.getlName());
+			clientRepo.save(dbClient);
 			return clientDTO;
 		}catch(Exception e){
 			return null;
